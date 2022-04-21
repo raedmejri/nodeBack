@@ -134,7 +134,8 @@ app.post('/register/', (req, res, next) => {
     var salt = hash_data.salt; // Get salt 
     var name = post_data.name;
     var email = post_data.email;
-    var adress = post_data.adress;
+    var role = post_data.role
+ 
     var phone = post_data.phone
     var imaa = post_data.imaa;
     con.query('SELECT * FROM user where email=?', [email], function (err, result, fields) {
@@ -144,13 +145,14 @@ app.post('/register/', (req, res, next) => {
         if (result && result.length)
             res.json('User already exists!!!');
         else {
-            con.query('INSERT INTO `User`(`unique_id`, `name`, `email`, `encrypted_password`, `salt`, `created_at`, `updated_at`,`adress`,`phone`,`imaa`) VALUES(?, ?, ?, ?,?, NOW(), NOW(),?,?,?)',
-           [uid, name, email, password, salt,adress,phone,ima], function(err, result, fields) {
+            con.query('INSERT INTO `User`(`unique_id`, `name`, `email`, `encrypted_password`, `salt`, `created_at`, `updated_at`,`phone`,`role` ) VALUES(?, ?, ?, ?,?, NOW(), NOW(),?,?)',
+           [uid, name, email, password, salt,phone,role], function(err, result, fields) {
                     con.on('error', function (err) {
                         console.log('[MySQL ERROR]', err);
                         res.json('Register Error: ', err);
 
                     });
+                   
 
                     res.json('Register Successful!');
         })
